@@ -1,0 +1,7 @@
+.DS_Store
+node_modules/**
+typechain/**
+artifacts/**
+cache/**/**
+cache/solidity-files-cache.json
+.env

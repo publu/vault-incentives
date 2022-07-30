@@ -1,0 +1,15 @@
+{
+  "250": [
+    {
+      "name": "Yearn vault BTC (Fantom)",
+      "vaultAddress": "0x571F42886C31f9b769ad243e81D06D0D144BE7B4",
+      "minCdr": 1.6,
+      "maxCdr": 4.05,
+      "rewardPerBlock": "4984462710505210",
+      "collateralDecimals": 8,
+      "startBlock": 18840162,
+      "endBlock": 99999999,
+      "chainId": "250"
+    }
+  ]
+}

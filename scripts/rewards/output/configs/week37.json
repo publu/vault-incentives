@@ -1,0 +1,15 @@
+{
+  "43114": [
+    {
+      "name": "Bitcoin (Avalanche)",
+      "vaultAddress": "0x1f8f7a1d38e41eaf0ed916def29bdd13f2a3f11a",
+      "minCdr": 1.55,
+      "maxCdr": 4,
+      "rewardPerSecond": "9564649992489110",
+      "collateralDecimals": 8,
+      "startBlock": 18840162,
+      "endBlock": 99999999,
+      "chainId": "43114"
+    }
+  ]
+}

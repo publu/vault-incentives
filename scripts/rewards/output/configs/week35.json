@@ -1,0 +1,362 @@
+{
+  "56": [
+    {
+      "name": "BNB (Binance)",
+      "vaultAddress": "0xA56F9A54880afBc30CF29bB66d2D9ADCdcaEaDD6",
+      "minCdr": 1.55,
+      "maxCdr": 4,
+      "rewardPerSecond": "33877028465017300",
+      "collateralDecimals": 18,
+      "startBlock": 18840162,
+      "endBlock": 99999999,
+      "chainId": "56"
+    },
+    {
+      "name": "Cake (Binance)",
+      "vaultAddress": "0x014A177E9642d1b4E970418f894985dC1b85657f",
+      "minCdr": 1.55,
+      "maxCdr": 4,
+      "rewardPerSecond": "89071941625812",
+      "collateralDecimals": 18,
+      "startBlock": 18840162,
+      "endBlock": 99999999,
+      "chainId": "56"
+    }
+  ],
+  "10": [
+      {
+      "name": "Ethereum (Optimism)",
+      "vaultAddress": "0x062016Cd29Fabb26c52BAB646878987fC9B0Bc55",
+      "minCdr": 1.55,
+      "maxCdr": 4,
+      "rewardPerSecond": "31620539277163400",
+      "collateralDecimals": 18,
+      "startBlock": 18840162,
+      "endBlock": 99999999,
+      "chainId": "10"
+    },
+    {
+      "name": "Bitcoin (Optimism)",
+      "vaultAddress": "0xB9C8F0d3254007eE4b98970b94544e473Cd610EC",
+      "minCdr": 1.55,
+      "maxCdr": 4,
+      "rewardPerSecond": "178143883251625",
+      "collateralDecimals": 8,
+      "startBlock": 18840162,
+      "endBlock": 99999999,
+      "chainId": "10"
+    }
+  ],
+  "137": [
+    {
+      "name": "Wrapped MATIC (Polygon)",
+      "vaultAddress": "0x305f113ff78255d4f8524c8f50c7300b91b10f6a",
+      "minCdr": 1.45,
+      "maxCdr": 3.9,
+      "rewardPerSecond": "59381294417208",
+      "collateralDecimals": 18,
+      "startBlock": 18840162,
+      "endBlock": 99999999,
+      "chainId": "137"
+    },
+    {
+      "name": "WETH (Polygon)",
+      "vaultAddress": "0x3fd939B017b31eaADF9ae50C7fF7Fa5c0661d47C",
+      "minCdr": 1.55,
+      "maxCdr": 4,
+      "rewardPerSecond": "950100710675332",
+      "collateralDecimals": 18,
+      "startBlock": 18840162,
+      "endBlock": 99999999,
+      "chainId": "137"
+    },
+    {
+      "name": "WBTC (Polygon)",
+      "vaultAddress": "0x37131aEDd3da288467B6EBe9A77C523A700E6Ca1",
+      "minCdr": 1.55,
+      "maxCdr": 4,
+      "rewardPerSecond": "1157935241135560",
+      "collateralDecimals": 8,
+      "startBlock": 18840162,
+      "endBlock": 99999999,
+      "chainId": "137"
+    },
+    {
+      "name": "LINK (Polygon)",
+      "vaultAddress": "0x61167073E31b1DAd85a3E531211c7B8F1E5cAE72",
+      "minCdr": 1.55,
+      "maxCdr": 4,
+      "rewardPerSecond": "296906472086041",
+      "collateralDecimals": 18,
+      "startBlock": 18840162,
+      "endBlock": 99999999,
+      "chainId": "137"
+    },
+    {
+      "name": "CRV (Polygon)",
+      "vaultAddress": "0x98B5F32dd9670191568b661a3e847Ed764943875",
+      "minCdr": 1.55,
+      "maxCdr": 4,
+      "rewardPerSecond": "1365769771595790",
+      "collateralDecimals": 18,
+      "startBlock": 18840162,
+      "endBlock": 99999999,
+      "chainId": "137"
+    },
+    {
+      "name": "Compounding Aave MATIC (Polygon)",
+      "vaultAddress": "0x88d84a85A87ED12B8f098e8953B322fF789fCD1a",
+      "minCdr": 1.6,
+      "maxCdr": 4.05,
+      "rewardPerSecond": "2286179835062520",
+      "collateralDecimals": 18,
+      "startBlock": 18840162,
+      "endBlock": 99999999,
+      "chainId": "137"
+    },
+    {
+      "name": "Compounding Aave ETH (Polygon)",
+      "vaultAddress": "0x11A33631a5B5349AF3F165d2B7901A4d67e561ad",
+      "minCdr": 1.6,
+      "maxCdr": 4.05,
+      "rewardPerSecond": "5403697791965950",
+      "collateralDecimals": 18,
+      "startBlock": 18840162,
+      "endBlock": 99999999,
+      "chainId": "137"
+    },
+    {
+      "name": "Compounding Aave AAVE (Polygon)",
+      "vaultAddress": "0x578375c3af7d61586c2C3A7BA87d2eEd640EFA40",
+      "minCdr": 1.6,
+      "maxCdr": 4.05,
+      "rewardPerSecond": "920410063466728",
+      "collateralDecimals": 18,
+      "startBlock": 18840162,
+      "endBlock": 99999999,
+      "chainId": "137"
+    },
+    {
+      "name": "Compounding Aave WBTC (Polygon)",
+      "vaultAddress": "0x7dda5e1a389e0c1892caf55940f5fce6588a9ae0",
+      "minCdr": 1.6,
+      "maxCdr": 4.05,
+      "rewardPerSecond": "979791357883936",
+      "collateralDecimals": 8,
+      "startBlock": 18840162,
+      "endBlock": 99999999,
+      "chainId": "137"
+    },
+    {
+      "name": "BAL (Polygon)",
+      "vaultAddress": "0x701A1824e5574B0b6b1c8dA808B184a7AB7A2867",
+      "minCdr": 1.55,
+      "maxCdr": 4,
+      "rewardPerSecond": "0",
+      "collateralDecimals": 18,
+      "startBlock": 18840162,
+      "endBlock": 99999999,
+      "chainId": "137"
+    },
+    {
+      "name": "dQUICK (Polygon)",
+      "vaultAddress": "0x649Aa6E6b6194250C077DF4fB37c23EE6c098513",
+      "minCdr": 1.55,
+      "maxCdr": 4,
+      "rewardPerSecond": "207834530460229",
+      "collateralDecimals": 18,
+      "startBlock": 18840162,
+      "endBlock": 99999999,
+      "chainId": "137"
+    },
+    {
+      "name": "GHST (Polygon)",
+      "vaultAddress": "0xF086dEdf6a89e7B16145b03a6CB0C0a9979F1433",
+      "minCdr": 1.55,
+      "maxCdr": 4,
+      "rewardPerSecond": "89071941625812",
+      "collateralDecimals": 18,
+      "startBlock": 18840162,
+      "endBlock": 99999999,
+      "chainId": "137"
+    },
+    {
+      "name": "Frax Share (Polygon)",
+      "vaultAddress": "0xff2c44Fb819757225a176e825255a01B3B8BB051",
+      "minCdr": 1.55,
+      "maxCdr": 4,
+      "rewardPerSecond": "148453236043021",
+      "collateralDecimals": 18,
+      "startBlock": 18840162,
+      "endBlock": 99999999,
+      "chainId": "137"
+    },
+    {
+      "name": "cxDOGE (Polygon)",
+      "vaultAddress": "0x7CbF49E4214C7200AF986bc4aACF7bc79dd9C19a",
+      "minCdr": 1.55,
+      "maxCdr": 4,
+      "rewardPerSecond": "118762588834416",
+      "collateralDecimals": 18,
+      "startBlock": 18840162,
+      "endBlock": 99999999,
+      "chainId": "137"
+    },
+    {
+      "name": "vGHST (Polygon)",
+      "vaultAddress": "0x1F0aa72b980d65518e88841bA1dA075BD43fa933",
+      "minCdr": 1.55,
+      "maxCdr": 4,
+      "rewardPerSecond": "76631560445407200",
+      "collateralDecimals": 18,
+      "startBlock": 18840162,
+      "endBlock": 99999999,
+      "chainId": "137"
+    },
+    {
+      "name": "SAND (Polygon)",
+      "vaultAddress": "0x305f113ff78255d4F8524c8F50C7300B91B10f6A",
+      "minCdr": 1.6,
+      "maxCdr": 4.05,
+      "rewardPerSecond": "415669060920458",
+      "collateralDecimals": 18,
+      "startBlock": 18840162,
+      "endBlock": 99999999,
+      "chainId": "137"
+    },
+    {
+      "name": "CEL (Polygon)",
+      "vaultAddress": "0x178f1c95c85fe7221c7a6a3d6f12b7da3253eeae",
+      "minCdr": 1.55,
+      "maxCdr": 4,
+      "rewardPerSecond": "1306388477178580",
+      "collateralDecimals": 4,
+      "startBlock": 18840162,
+      "endBlock": 99999999,
+      "chainId": "137"
+    }
+  ],
+  "250": [
+    {
+      "name": "WETH (Fantom)",
+      "vaultAddress": "0xD939c268C49c442F037E968F045ba02f499562D4",
+      "minCdr": 1.55,
+      "maxCdr": 4,
+      "rewardPerSecond": "0",
+      "collateralDecimals": 18,
+      "startBlock": 18840162,
+      "endBlock": 99999999,
+      "chainId": "250"
+    },
+    {
+      "name": "Yearn Vault WFTM (Fantom)",
+      "vaultAddress": "0x7efB260662a6FA95c1CE1092c53Ca23733202798",
+      "minCdr": 1.6,
+      "maxCdr": 4.05,
+      "rewardPerSecond": "59381294417208",
+      "collateralDecimals": 18,
+      "startBlock": 18840162,
+      "endBlock": 99999999,
+      "chainId": "250"
+    },
+    {
+      "name": "Yearn Vault BTC (Fantom)",
+      "vaultAddress": "0x571F42886C31f9b769ad243e81D06D0D144BE7B4",
+      "minCdr": 1.6,
+      "maxCdr": 4.05,
+      "rewardPerSecond": "89071941625812",
+      "collateralDecimals": 8,
+      "startBlock": 18840162,
+      "endBlock": 99999999,
+      "chainId": "250"
+    },
+    {
+      "name": "Yearn Vault ETH (Fantom)",
+      "vaultAddress": "0x7aE52477783c4E3e5c1476Bbb29A8D029c920676",
+      "minCdr": 1.6,
+      "maxCdr": 4.05,
+      "rewardPerSecond": "0",
+      "collateralDecimals": 18,
+      "startBlock": 18840162,
+      "endBlock": 99999999,
+      "chainId": "250"
+    },
+    {
+      "name": "WFTM (Fantom)",
+      "vaultAddress": "0x1066b8FC999c1eE94241344818486D5f944331A0",
+      "minCdr": 1.55,
+      "maxCdr": 4,
+      "rewardPerSecond": "0",
+      "collateralDecimals": 18,
+      "startBlock": 18840162,
+      "endBlock": 99999999,
+      "chainId": "250"
+    },
+    {
+      "name": "WBTC (Fantom)",
+      "vaultAddress": "0xE5996a2cB60eA57F03bf332b5ADC517035d8d094",
+      "minCdr": 1.55,
+      "maxCdr": 4,
+      "rewardPerSecond": "0",
+      "collateralDecimals": 8,
+      "startBlock": 18840162,
+      "endBlock": 99999999,
+      "chainId": "250"
+    },
+    {
+      "name": "Beefy Scream BTC (Fantom)",
+      "vaultAddress": "0x5563Cc1ee23c4b17C861418cFF16641D46E12436",
+      "minCdr": 1.6,
+      "maxCdr": 4.05,
+      "rewardPerSecond": "22653963820164900",
+      "collateralDecimals": 18,
+      "startBlock": 18840162,
+      "endBlock": 99999999,
+      "chainId": "250"
+    },
+    {
+      "name": "Beefy Scream WETH (Fantom)",
+      "vaultAddress": "0xC1c7eF18ABC94013F6c58C6CdF9e829A48075b4e",
+      "minCdr": 1.6,
+      "maxCdr": 4.05,
+      "rewardPerSecond": "118762588834416",
+      "collateralDecimals": 18,
+      "startBlock": 18840162,
+      "endBlock": 99999999,
+      "chainId": "250"
+    },
+    {
+      "name": "Beefy Scream FTM (Fantom)",
+      "vaultAddress": "0x3609A304c6A41d87E895b9c1fd18c02ba989Ba90",
+      "minCdr": 1.6,
+      "maxCdr": 4.05,
+      "rewardPerSecond": "326597119294645",
+      "collateralDecimals": 18,
+      "startBlock": 18840162,
+      "endBlock": 99999999,
+      "chainId": "250"
+    },
+    {
+      "name": "Beefy Scream LINK (Fantom)",
+      "vaultAddress": "0x8e5e4D08485673770Ab372c05f95081BE0636Fa2",
+      "minCdr": 1.6,
+      "maxCdr": 4.05,
+      "rewardPerSecond": "49316165013491500",
+      "collateralDecimals": 18,
+      "startBlock": 18840162,
+      "endBlock": 99999999,
+      "chainId": "250"
+    },
+    {
+      "name": "mooBIFI (Fantom)",
+      "vaultAddress": "0x75d4ab6843593c111eeb02ff07055009c836a1ef",
+      "minCdr": 1.65,
+      "maxCdr": 4.1,
+      "rewardPerSecond": "66714884277733500",
+      "collateralDecimals": 18,
+      "startBlock": 18840162,
+      "endBlock": 99999999,
+      "chainId": "250"
+    }
+  ]
+}
