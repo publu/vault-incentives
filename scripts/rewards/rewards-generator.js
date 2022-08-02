@@ -381,6 +381,7 @@ async function main(
 
   for (chainId of Object.keys(vIncentives)) {
     const incentives = vIncentives[chainId];
+    console.log("Using: ", RPC[chainId]);
     const provider = new ethers.providers.JsonRpcProvider(
       RPC[chainId],
       parseInt(chainId)
