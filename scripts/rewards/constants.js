@@ -1,4 +1,4 @@
-require("dotenv").config({path:__dirname+'/./../../.env'});
+require("dotenv").config({ path: require('find-config')('.env') });
 
 const { ChainId } = require("@qidao/sdk");
 
