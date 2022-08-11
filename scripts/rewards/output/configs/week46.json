@@ -25,14 +25,14 @@
     {
       "name": "OP (Optimism)",
       "vaultAddress": "0xbf1aea8670d2528e08334083616dd9c5f3b087ae",
-      "minCdr": 1.80,
+      "minCdr": 1.8,
       "maxCdr": 4.25,
       "rewardPerSecond": "14638961386602400",
       "collateralDecimals": 18,
       "startBlock": 18840162,
       "endBlock": 99999999,
       "chainId": "10"
-    },
+    }
   ],
   "100": [
     {
@@ -146,7 +146,7 @@
       "startBlock": 18840162,
       "endBlock": 99999999,
       "chainId": "137"
-    },
+    }
   ],
   "1088": [
     {
