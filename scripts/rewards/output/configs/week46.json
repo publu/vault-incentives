@@ -21,7 +21,7 @@
       "startBlock": 18840162,
       "endBlock": 99999999,
       "chainId": "10"
-    }
+    },
     {
       "name": "OP (Optimism)",
       "vaultAddress": "0xbf1aea8670d2528e08334083616dd9c5f3b087ae",
