@@ -50,7 +50,7 @@
       "name": "GNO (Gnosis Chain)",
       "vaultAddress": "0x014a177e9642d1b4e970418f894985dc1b85657f",
       "minCdr": 1.55,
-      "maxCdr": 4,
+      "maxCdr": 5,
       "rewardPerSecond": "28441410693970400",
       "collateralDecimals": 18,
       "startBlock": 18840162,
