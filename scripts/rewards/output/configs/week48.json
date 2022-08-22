@@ -268,14 +268,7 @@
       "collateralDecimals": 18,
       "startBlock": 18840162,
       "endBlock": 99999999,
-      "chainId": "1088",
-      "extraRewards": [
-      {
-      "name": "METIS",
-      "rewardPerSecond": "16534391534391534",
-      "address": "0xDeadDeAddeAddEAddeadDEaDDEAdDeaDDeAD0000",
-      }
-      ]
+      "chainId": "1088"
     },
     {
       "name": "WBTC (Metis)",
