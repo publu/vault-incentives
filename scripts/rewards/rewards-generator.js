@@ -26,12 +26,15 @@ const { getUnixTime } = require("date-fns/fp");
 //   totalOwnerReward[owner] += ownerDebt[owner] * qi_per_block / totalDebt
 
 const args = process.argv.slice(2);
+const vaultIncentivesFilePath = args[0];
+const onlyChain = args[1];
+const onlyVaultType = args[2];
 
 // filters if runForVaults.length > 0
 const runForVaults = [];
 const excludeVaults = [];
 
-const incentiveData = JSON.parse(fs.readFileSync(args[0]));
+const incentiveData = JSON.parse(fs.readFileSync(vaultIncentivesFilePath));
 
 const vIncentives = incentiveData;
 
@@ -380,6 +383,8 @@ async function main(
   */
 
   for (chainId of Object.keys(vIncentives)) {
+    if (onlyChain && chainId !== onlyChain) continue
+
     const incentives = vIncentives[chainId];
     console.log("Using: ", RPC[chainId]);
     const provider = new ethers.providers.JsonRpcProvider(
@@ -399,6 +404,8 @@ async function main(
 
     for (let i in validIncentives) {
       const incentive = validIncentives[i];
+      if (onlyVaultType && incentive.name !== onlyVaultType) continue
+
       console.log(`Starting vault incentive script for ${incentive.name}`);
       const before = new Date();
 
