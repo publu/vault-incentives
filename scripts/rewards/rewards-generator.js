@@ -120,9 +120,16 @@ async function main(
   }
 
   while (!finalized) {
-    const [totalSupply, price] = await tryGetMulticallResults(
+    const [price] = await tryGetMulticallResults(
       multicall,
-      [nftContract.vaultCount(), vaultContract.getEthPriceSource()],
+      [vaultContract.getEthPriceSource()],
+      true,
+      blockNumber
+    );
+
+    const [totalSupply] = await tryGetMulticallResults(
+      multicall,
+      [nftContract.vaultCount()],
       true,
       endBlock
     );
