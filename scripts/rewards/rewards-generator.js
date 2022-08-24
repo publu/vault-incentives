@@ -121,7 +121,7 @@ async function main(
       multicall,
       [nftContract.vaultCount(), vaultContract.getEthPriceSource()],
       true,
-      endBlock
+      blockNumber
     );
 
     const nVaults = parseInt(totalSupply.toString());
