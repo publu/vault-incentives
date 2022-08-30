@@ -1,4 +1,42 @@
 {
+  "1088": [
+    {
+      "name": "METIS (Metis)",
+      "vaultAddress": "0x10dcbee8afa39a847707e16aea5eb34c6b01aba9",
+      "minCdr": 1.8,
+      "maxCdr": 4.25,
+      "rewardPerSecond": "0",
+      "collateralDecimals": 18,
+      "startBlock": 18840162,
+      "endBlock": 99999999,
+      "chainId": "1088",
+      "extraRewards": [
+        {
+          "name": "METIS",
+          "rewardPerSecond": "669951034618782",
+          "address": "0xDeadDeAddeAddEAddeadDEaDDEAdDeaDDeAD0000"
+        }
+      ]
+    },
+    {
+      "name": "WETH (Metis)",
+      "vaultAddress": "0xc09c73f7b32573d178138e76c0e286ba21085c20",
+      "minCdr": 1.55,
+      "maxCdr": 4,
+      "rewardPerSecond": "0",
+      "collateralDecimals": 18,
+      "startBlock": 18840162,
+      "endBlock": 99999999,
+      "chainId": "1088",
+      "extraRewards": [
+        {
+          "name": "METIS",
+          "rewardPerSecond": "669951034618782",
+          "address": "0xDeadDeAddeAddEAddeadDEaDDEAdDeaDDeAD0000"
+        }
+      ]
+    }
+  ],
   "137": [
     {
       "name": "Wrapped MATIC (Polygon)",
@@ -120,44 +158,6 @@
       "startBlock": 18840162,
       "endBlock": 99999999,
       "chainId": "137"
-    }
-  ],
-  "1088": [
-    {
-      "name": "METIS (Metis)",
-      "vaultAddress": "0x10dcbee8afa39a847707e16aea5eb34c6b01aba9",
-      "minCdr": 1.8,
-      "maxCdr": 4.25,
-      "rewardPerSecond": "0",
-      "collateralDecimals": 18,
-      "startBlock": 18840162,
-      "endBlock": 99999999,
-      "chainId": "1088",
-      "extraRewards": [
-        {
-          "name": "METIS",
-          "rewardPerSecond": "669951034618782",
-          "address": "0xDeadDeAddeAddEAddeadDEaDDEAdDeaDDeAD0000"
-        }
-      ]
-    },
-    {
-      "name": "WETH (Metis)",
-      "vaultAddress": "0xc09c73f7b32573d178138e76c0e286ba21085c20",
-      "minCdr": 1.55,
-      "maxCdr": 4,
-      "rewardPerSecond": "0",
-      "collateralDecimals": 18,
-      "startBlock": 18840162,
-      "endBlock": 99999999,
-      "chainId": "1088",
-      "extraRewards": [
-        {
-          "name": "METIS",
-          "rewardPerSecond": "669951034618782",
-          "address": "0xDeadDeAddeAddEAddeadDEaDDEAdDeaDDeAD0000"
-        }
-      ]
     }
   ],
   "42161": [
