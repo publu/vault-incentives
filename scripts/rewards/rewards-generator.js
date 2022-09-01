@@ -15,6 +15,7 @@ const Confirm = require("prompt-confirm");
 const { formatDistanceToNowStrict, isBefore } = require("date-fns");
 const { formatInTimeZone } = require("date-fns-tz");
 const { getUnixTime } = require("date-fns/fp");
+const oneWeek = 604800;
 
 // Every X blocks, check qualifying vaults.
 // Price - getEthPriceSource()
@@ -85,7 +86,8 @@ async function main(
   endBlock,
   blockInterval,
   rewardPerBlock,
-  provider
+  provider,
+  extraRewards
 ) {
   const isMaticVault =
     vaultAddress.toLowerCase() == "0xa3fa99a148fa48d14ed51d610c367c61876997f1";
@@ -118,6 +120,9 @@ async function main(
     finalized = true;
     skip = true;
   }
+
+  let ownerDebtGlobal;
+  let totalDebtGlobal;
 
   while (!finalized) {
     const [price] = await tryGetMulticallResults(
@@ -260,6 +265,8 @@ async function main(
         blockNumber += blockInterval;
       }
     } else {
+      ownerDebtGlobal = ownerDebt;
+      totalDebtGlobal = totalDebt;
       finalized = true;
     }
   }
@@ -272,7 +279,42 @@ async function main(
       total = total.add(ownerReward[owner]);
     }
 
-    const fileName = `${vaultName}-rewards-${startBlock}-${endBlock}.json`;
+    if(extraRewards) {
+      console.log("we got to here so let's see how many rewards we gotta give")
+
+      //console.log(extraRewards)
+      // support multiple extra rewards
+      for (let i = 0; i < extraRewards.length; i++) {
+        const reward_= extraRewards[i];
+        const fileVaultName = vaultName.replace(" ","_")
+        const weekAmount = BigNumber.from(reward_["rewardPerSecond"]).mul(BigNumber.from(oneWeek));
+        const rewardFileName = `${vaultName}-${reward_["name"]}-rewards-${startBlock}-${endBlock}.json`;
+
+        const ownerRewarders = Object.keys(ownerDebtGlobal);
+        
+        let extraRewarders = {};
+
+        for(let o=0; o < ownerRewarders.length; o++){
+          const fraction = ownerDebtGlobal[ownerRewarders[o]];
+          extraRewarders[ownerRewarders[o]] = BigNumber.from(fraction).mul(weekAmount).div(totalDebtGlobal);
+        }
+        const extraReward = JSON.stringify({
+          details: {
+            chainId: provider._network.chainId,
+            rewardToken: reward_["address"],
+            vaultAddress,
+            startBlock,
+            endBlock,
+            weekAmount,
+          },
+          values: extraRewarders,
+        });
+
+        fs.writeFileSync(rewardFileName, extraReward);
+      }
+    }
+
+    const fileName = `${vaultName}-QI-rewards-${startBlock}-${endBlock}.json`;
     const output = JSON.stringify({
       details: {
         chainId: provider._network.chainId,
@@ -310,8 +352,6 @@ async function main(
 
   const startDate = getUnixTime(purposedStartDate);
 
-  const oneWeek = 604800;
-
   const endDate = startDate + oneWeek;
 
   // need to process the list of chains by name of object from the config:
@@ -321,7 +361,7 @@ async function main(
   {
     blocks (where: { ts: ` +
     startDate +
-    `, network_in: ["100", "10", "56", "137", "250", "42161", "43114"] }) {
+    `, network_in: ["100", "10", "56", "137", "250", "1088", "42161", "43114"] }) {
       network
       number
     }
@@ -336,7 +376,7 @@ async function main(
   {
     blocks (where: { ts: ` +
     endDate +
-    `, network_in: ["100", "10", "56", "100", "137", "250", "42161", "43114"] }) {
+    `, network_in: ["100", "10", "56", "100", "137", "250", "1088", "42161", "43114"] }) {
       network
       number
     }
@@ -431,9 +471,12 @@ async function main(
         blocks[chainId][1],
         blockIntervals[chainId],
         rewardPerBlock,
-        provider
+        provider,
+        incentive.extraRewards
       );
+
       const after = new Date();
+
       console.log(
         `Finished ${incentive.name} vault reward script in ${(
           (after - before) /
