@@ -24,6 +24,7 @@ const RPC = {
   [ChainId.HARMONY]: process.env.HARMONY_RPC_URL,
   [ChainId.HARMONY_TESTNET]: process.env.HARMONY_TESTNET_RPC_URL,
   [ChainId.OPTIMISM]: process.env.OPTIMISM_RPC_URL,
+  [ChainId.METIS]: process.env.METIS_RPC_URL,
 };
 
 module.exports = {
