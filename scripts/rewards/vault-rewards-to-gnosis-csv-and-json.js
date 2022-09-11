@@ -21,17 +21,24 @@ async function main() {
 
   let chainBlocks = {};
 
+  let rewardsPerChainAndToken = {};
+  let rewardsPerChainAndTokenCalculated = {};
+
+
   for (let file of files) {
     if(!file.includes("DS_Store")){
-      console.log(file)
+
       let data = JSON.parse(fs.readFileSync(file));
       const {
-        details: { chainId, vaultAddress, rewardToken, startBlock, endBlock },
+        details: { chainId, vaultAddress, rewardToken, startBlock, endBlock, total },
         values,
       } = data;
-      
-      let rewardTokenAddress;
 
+      if(total){
+        console.log(file, " ", BigNumber.from(total).toString())
+      }
+
+      let rewardTokenAddress;
 
       if(!chainBlocks[chainId]){
         chainBlocks[chainId] = {};
@@ -56,6 +63,22 @@ async function main() {
         includedVaults[chainId][rewardTokenAddress] = [];
       }
 
+      if(!rewardsPerChainAndTokenCalculated[chainId]) {
+        rewardsPerChainAndTokenCalculated[chainId] = {}//BigNumber.from(0)
+      }
+
+      if(!rewardsPerChainAndTokenCalculated[chainId][rewardTokenAddress]) {
+        rewardsPerChainAndTokenCalculated[chainId][rewardTokenAddress] = BigNumber.from(0)
+      }
+
+      if(!rewardsPerChainAndToken[chainId]){
+        rewardsPerChainAndToken[chainId] = BigNumber.from(0)
+      }
+
+      if(total){
+        rewardsPerChainAndToken[chainId] = rewardsPerChainAndToken[chainId].add(BigNumber.from(total));
+      }
+
       chainBlocks[chainId]["startBlock"] = startBlock
       chainBlocks[chainId]["endBlock"] = endBlock
 
@@ -63,15 +86,17 @@ async function main() {
       const vaultOwners = Object.keys(values);
       for (let i = 0; i < vaultOwners.length; i++) {
         const vaultOwner = vaultOwners[i];
-        if (finalOwnerRewards[chainId][vaultOwner]) {
-          finalOwnerRewards[chainId][rewardTokenAddress][vaultOwner] = finalOwnerRewards[chainId][vaultOwner].add(
+
+        if (finalOwnerRewards[chainId][rewardTokenAddress][vaultOwner] !== undefined) {
+          finalOwnerRewards[chainId][rewardTokenAddress][vaultOwner] = finalOwnerRewards[chainId][rewardTokenAddress][vaultOwner].add(
             values[vaultOwner]
           );
         } else {
+          console.log("else: ", finalOwnerRewards[chainId][rewardTokenAddress][vaultOwner])
           try{
             finalOwnerRewards[chainId][rewardTokenAddress][vaultOwner] = BigNumber.from(values[vaultOwner]);
           } catch (e) {
-            
+            console.log("error? ", e) 
           }
         }
       }
@@ -79,34 +104,42 @@ async function main() {
   }
   const chains = Object.keys(finalOwnerRewards);
 
-  console.log("chains: ",  chains);
-  console.log("finalOwnerRewards: ", finalOwnerRewards);
+//  console.log("chains: ",  chains);
+//  console.log("finalOwnerRewards: ", finalOwnerRewards);
 
-  let total = BigNumber.from(0);
+  let total = {};//BigNumber.from(0);
+
   let formattedFinalOwnerRewards = {};
   let bnFormattedFinalOwnerRewards = {};
+
   for (let chainId of chains) {
-    console.log(chainId)
+    //console.log(chainId)
     
     const rewards = Object.keys(finalOwnerRewards[chainId]);
 
     for(let rewardTokenAddress of rewards) {
 
-      console.log("rewardTokenAddress: ",rewardTokenAddress)
+      //console.log("rewardTokenAddress: ",rewardTokenAddress)
 
       const vaultOwners = Object.keys(finalOwnerRewards[chainId][rewardTokenAddress])
+
       for (let vaultOwner of vaultOwners) {
-        total = total.add(finalOwnerRewards[chainId][rewardTokenAddress][vaultOwner]);
         if (!formattedFinalOwnerRewards[chainId]) {
           formattedFinalOwnerRewards[chainId] = {}
           bnFormattedFinalOwnerRewards[chainId] = {}
+          total[chainId] = {}
         }
 
         if (!formattedFinalOwnerRewards[chainId][rewardTokenAddress]) {
           formattedFinalOwnerRewards[chainId][rewardTokenAddress] = {}
           bnFormattedFinalOwnerRewards[chainId][rewardTokenAddress] = {}
+          total[chainId][rewardTokenAddress] = BigNumber.from(0);
         }
-        
+
+        total[chainId][rewardTokenAddress] = total[chainId][rewardTokenAddress].add(finalOwnerRewards[chainId][rewardTokenAddress][vaultOwner]);
+
+        rewardsPerChainAndTokenCalculated[chainId][rewardTokenAddress] = rewardsPerChainAndTokenCalculated[chainId][rewardTokenAddress].add(finalOwnerRewards[chainId][rewardTokenAddress][vaultOwner])
+
         formattedFinalOwnerRewards[chainId][rewardTokenAddress][vaultOwner.toLowerCase()] = parseFloat(
           ethers.utils.formatUnits(finalOwnerRewards[chainId][rewardTokenAddress][vaultOwner])
         );
@@ -129,7 +162,7 @@ async function main() {
         details: {
           chainId,
           rewardAddress: rewardTokenAddress,
-          total: parseFloat(ethers.utils.formatUnits(total)),
+          total: parseFloat(ethers.utils.formatUnits(total[chainId][rewardTokenAddress])),
           startBlock,
           endBlock,
           includedVaults,
@@ -141,20 +174,32 @@ async function main() {
       const JsonFileName = `${chainId}-${rewardTokenAddress}-vault-rewards-${startBlock}-${endBlock}-api.json`;
       const CsvFileName = `${chainId}-${rewardTokenAddress}-vault-rewards-${startBlock}-${endBlock}-gnosis.csv`;
 
-      fs.writeFileSync(JsonFileName, jsonOutput);
+      if(total[chainId][rewardTokenAddress] > 0){
+        fs.writeFileSync(JsonFileName, jsonOutput);
 
-      const gnosisOutputLines = [];
+        const gnosisOutputLines = [];
 
-      for (let i = 0; i < vaultOwners.length; i++) {
-        const vaultOwner = vaultOwners[i];
-        gnosisOutputLines.push(
-          `erc20,${rewardAddress[chainId]},${vaultOwner},${bnFormattedFinalOwnerRewards[chainId][rewardTokenAddress][vaultOwner.toLowerCase()]
-          },`
-        );
+        for (let i = 0; i < vaultOwners.length; i++) {
+          const vaultOwner = vaultOwners[i];
+          gnosisOutputLines.push(
+            `erc20,${rewardAddress[chainId]},${vaultOwner},${bnFormattedFinalOwnerRewards[chainId][rewardTokenAddress][vaultOwner.toLowerCase()]
+            },`
+          );
+        }
+
+        fs.writeFileSync(CsvFileName, gnosisOutputLines.join("\n")); 
       }
 
-      fs.writeFileSync(CsvFileName, gnosisOutputLines.join("\n"));
-
+    }
+  }
+  console.log("Rewards: ")
+  for(let chain of Object.keys(rewardsPerChainAndToken)){
+    console.log(chain, ": ", rewardsPerChainAndToken[chain].toString())
+  }
+  console.log("Calculated Rewards: ")
+  for(let chain of Object.keys(rewardsPerChainAndTokenCalculated)){
+    for(let reward of Object.keys(rewardsPerChainAndTokenCalculated[chain])){
+      console.log(chain, ": ", rewardsPerChainAndTokenCalculated[chain][reward].toString())
     }
   }
   console.log("Done:)");
