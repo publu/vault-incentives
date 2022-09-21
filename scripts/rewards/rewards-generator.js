@@ -112,6 +112,8 @@ async function main(
   let blockNumber = startBlock;
 
   console.log("blockNumber: ", blockNumber);
+  
+  console.log("endBlock: ", endBlock);
 
   const fileNameToCheck = `${vaultName}-rewards-${startBlock}-${endBlock}.json`;
 
