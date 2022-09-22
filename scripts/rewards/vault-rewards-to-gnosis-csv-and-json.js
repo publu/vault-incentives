@@ -171,8 +171,10 @@ async function main() {
         values: formattedFinalOwnerRewards[chainId][rewardTokenAddress],
       });
 
-      const JsonFileName = `${chainId}-${rewardTokenAddress}-vault-rewards-${startBlock}-${endBlock}-api.json`;
-      const CsvFileName = `${chainId}-${rewardTokenAddress}-vault-rewards-${startBlock}-${endBlock}-gnosis.csv`;
+      let rewardAddressInCSV = (rewardTokenAddress=="0x3F56e0c36d275367b8C502090EDF38289b3dEa0d") ? rewardAddress[chainId] : rewardTokenAddress;
+
+      const JsonFileName = `${chainId}-${rewardAddressInCSV}-vault-rewards-${startBlock}-${endBlock}-api.json`;
+      const CsvFileName = `${chainId}-${rewardAddressInCSV}-vault-rewards-${startBlock}-${endBlock}-gnosis.csv`;
 
       if(total[chainId][rewardTokenAddress] > 0){
         fs.writeFileSync(JsonFileName, jsonOutput);
@@ -182,7 +184,7 @@ async function main() {
         for (let i = 0; i < vaultOwners.length; i++) {
           const vaultOwner = vaultOwners[i];
           gnosisOutputLines.push(
-            `erc20,${rewardAddress[chainId]},${vaultOwner},${bnFormattedFinalOwnerRewards[chainId][rewardTokenAddress][vaultOwner.toLowerCase()]
+            `erc20,${rewardAddressInCSV},${vaultOwner},${bnFormattedFinalOwnerRewards[chainId][rewardTokenAddress][vaultOwner.toLowerCase()]
             },`
           );
         }
