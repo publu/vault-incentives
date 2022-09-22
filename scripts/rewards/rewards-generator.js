@@ -316,7 +316,9 @@ async function main(
       }
     }
 
-    const fileName = `${vaultName}-QI-rewards-${startBlock}-${endBlock}.json`;
+    let fileName = `${vaultName}-QI-rewards-${startBlock}-${endBlock}.json`;
+    fileName = fileName.replace(" ","_");
+
     const output = JSON.stringify({
       details: {
         chainId: provider._network.chainId,
