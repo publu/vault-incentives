@@ -3,6 +3,9 @@ const QiStablecoin = require("../../abis/QiStablecoin.json");
 const { ethers, BigNumber } = require("ethers");
 const { Contract, Provider } = require("ethcall");
 const fs = require("fs");
+const axios = require('axios');
+let currentCalculation;
+
 const {
   sleep,
   splitToChunks,
@@ -25,20 +28,23 @@ const oneWeek = 604800;
 // totalDebt += debt
 // for owner in Object.keys(ownerDebt):
 //   totalOwnerReward[owner] += ownerDebt[owner] * qi_per_block / totalDebt
-
-const args = process.argv.slice(2);
+/*
 const vaultIncentivesFilePath = args[0];
-const onlyChain = args[1];
-const onlyVaultType = args[2];
+
+const incentiveData = JSON.parse(fs.readFileSync(vaultIncentivesFilePath));
+
+const vIncentives = incentiveData;
+*/
+const onlyChain = undefined;
+const onlyVaultType = undefined; 
 
 // filters if runForVaults.length > 0
 const runForVaults = [];
 const excludeVaults = [];
 
-const incentiveData = JSON.parse(fs.readFileSync(vaultIncentivesFilePath));
+const args = process.argv.slice(2);
 
-const vIncentives = incentiveData;
-
+console.log(args)
 // Arguments
 // collateralDecimals - collateral / debt normalization
 // provider - ethers JsonRPCProvider w/ archival node
@@ -115,7 +121,7 @@ async function main(
 
   console.log("endBlock: ", endBlock);
 
-  const fileNameToCheck = `${vaultName}-QI-rewards-${startBlock}-${endBlock}.json`;
+  const fileNameToCheck = `./week${currentCalculation}/${vaultName}-QI-rewards-${startBlock}-${endBlock}.json`;
 
   if (fs.existsSync(fileNameToCheck)) {
     console.log("skipping");
@@ -290,7 +296,7 @@ async function main(
         const reward_= extraRewards[i];
         const fileVaultName = vaultName.replace(" ","_")
         const weekAmount = BigNumber.from(reward_["rewardPerSecond"]).mul(BigNumber.from(oneWeek));
-        const rewardFileName = `${vaultName}-${reward_["name"]}-rewards-${startBlock}-${endBlock}.json`;
+        const rewardFileName = `./week${currentCalculation}/${vaultName}-${reward_["name"]}-rewards-${startBlock}-${endBlock}.json`;
 
         const ownerRewarders = Object.keys(ownerDebtGlobal);
         
@@ -316,7 +322,7 @@ async function main(
       }
     }
 
-    let fileName = `${vaultName}-QI-rewards-${startBlock}-${endBlock}.json`;
+    let fileName = `./week${currentCalculation}/${vaultName}-QI-rewards-${startBlock}-${endBlock}.json`;
     fileName = fileName.replace(" ","_");
 
     const output = JSON.stringify({
@@ -333,7 +339,52 @@ async function main(
   }
 }
 
+let incentiveData;// = JSON.parse(fs.readFileSync(vaultIncentivesFilePath));
+
+let vIncentives;
+
 (async () => {
+
+
+  let calculated = fs.readdirSync("./")
+                  .filter(calculated => String(calculated).startsWith('week'))
+                  .map(item => item.replace("week", ""))
+                  .filter(item => Number(item))
+                  .map(item => Number(item))
+
+  let latestRun = Math.max(...calculated);
+  let isWeek1 = (latestRun % 2);
+
+  currentCalculation = latestRun+1
+
+  if(!isWeek1){
+    console.log("last ran was week1")
+    // we just grab the latest config json
+    incentiveData = JSON.parse(fs.readFileSync("configs/week" + latestRun + ".json"))
+  } else {
+    console.log("new vault incentive config")
+    // we create a new config from the api
+    await axios
+      .get('https://api.mai.finance/v2/vaultIncentives')
+      .then(res => {
+        fs.writeFileSync("configs/week" + (latestRun+1) + ".json", JSON.stringify(res.data), function (err) {
+          if (err) return console.log(err);
+        });
+        incentiveData = JSON.parse(fs.readFileSync("configs/week" + (latestRun+1) + ".json"))
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  }
+  let dir = "week" + (latestRun+1);
+
+  if (!fs.existsSync(dir)){
+    fs.mkdirSync(dir);
+  }
+  console.log("rewards for week " + (latestRun+1) );
+
+  vIncentives = incentiveData;
+
   const curDate = new Date();
   const purposedStartDate = generateStartTime(curDate); // Override TS HERE
 
