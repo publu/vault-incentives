@@ -45,6 +45,9 @@ const excludeVaults = [];
 const args = process.argv.slice(2);
 
 console.log(args)
+
+const vaultIncentivesFile = args[0];
+
 // Arguments
 // collateralDecimals - collateral / debt normalization
 // provider - ethers JsonRPCProvider w/ archival node
@@ -121,7 +124,7 @@ async function main(
 
   console.log("endBlock: ", endBlock);
 
-  const fileNameToCheck = `./week${currentCalculation}/${vaultName}-QI-rewards-${startBlock}-${endBlock}.json`;
+  const fileNameToCheck = `week${currentCalculation}/${vaultName}-QI-rewards-${startBlock}-${endBlock}.json`.replace(" ","_");
 
   if (fs.existsSync(fileNameToCheck)) {
     console.log("skipping");
@@ -185,6 +188,7 @@ async function main(
       vaultCalls.push(nftContract.ownerOf(vault));
       vaultCalls.push(vaultContract.vaultCollateral(vault));
       vaultCalls.push(vaultContract.vaultDebt(vault));
+      vaultCalls.push(vaultContract.checkCollateralPercentage(vault));
     }
 
     const vaultCallsChunked = chunkArray(vaultCalls, 500);
@@ -222,12 +226,22 @@ async function main(
     let ownerDebt = {};
 
     for (let i = 0; i < vaultResultsChunked.length; i++) {
-      const [owner, collateral, debt] = vaultResultsChunked[i];
-      const cdr =
+      const [owner, collateral, debt, cdr_big] = vaultResultsChunked[i];
+      const cdr_ =
         parseInt(collateral.mul(price).div("100000000")) /
         parseInt(
           debt.div(BigNumber.from(10).pow(18 - collateralDecimals)).toString()
         );
+
+      let cdr;
+      try {
+        cdr = cdr_big.toNumber() / 100;
+      } catch (e){
+        cdr = 0; // if cdr is too high it won't count either way. must be under 400 which is a number.
+      }
+
+      console.log("cdr: ", cdr);
+
       if (cdr >= minCdr && cdr <= maxCdr) {
         totalDebt = totalDebt.add(debt);
         if (ownerDebt[owner]) {
@@ -345,43 +359,51 @@ let vIncentives;
 
 (async () => {
 
-
-  let calculated = fs.readdirSync("./")
+  let calculated;
+  if(!vaultIncentivesFile){
+    calculated = fs.readdirSync("./")
                   .filter(calculated => String(calculated).startsWith('week'))
                   .map(item => item.replace("week", ""))
                   .filter(item => Number(item))
                   .map(item => Number(item))
 
-  let latestRun = Math.max(...calculated);
-  let isWeek1 = (latestRun % 2);
 
-  currentCalculation = latestRun+1
+    let latestRun = Math.max(...calculated);
+    let isWeek1 = (latestRun % 2);
 
-  if(!isWeek1){
-    console.log("last ran was week1")
-    // we just grab the latest config json
-    incentiveData = JSON.parse(fs.readFileSync("configs/week" + latestRun + ".json"))
-  } else {
-    console.log("new vault incentive config")
-    // we create a new config from the api
-    await axios
-      .get('https://api.mai.finance/v2/vaultIncentives')
-      .then(res => {
-        fs.writeFileSync("configs/week" + (latestRun+1) + ".json", JSON.stringify(res.data), function (err) {
-          if (err) return console.log(err);
+    currentCalculation = latestRun+1
+
+    if(!isWeek1){
+      console.log("last ran was week1")
+      // we just grab the latest config json
+      incentiveData = JSON.parse(fs.readFileSync("configs/week" + latestRun + ".json"))
+    } else {
+      console.log("new vault incentive config")
+      // we create a new config from the api
+      await axios
+        .get('https://api.mai.finance/v2/vaultIncentives')
+        .then(res => {
+          fs.writeFileSync("configs/week" + (latestRun+1) + ".json", JSON.stringify(res.data), function (err) {
+            if (err) return console.log(err);
+          });
+          incentiveData = JSON.parse(fs.readFileSync("configs/week" + (latestRun+1) + ".json"))
+        })
+        .catch(error => {
+          console.error(error);
         });
-        incentiveData = JSON.parse(fs.readFileSync("configs/week" + (latestRun+1) + ".json"))
-      })
-      .catch(error => {
-        console.error(error);
-      });
-  }
-  let dir = "week" + (latestRun+1);
+    }
 
-  if (!fs.existsSync(dir)){
-    fs.mkdirSync(dir);
+    let dir = "week" + (latestRun+1);
+
+    if (!fs.existsSync(dir)){
+      fs.mkdirSync(dir);
+    }
+    console.log("rewards for week " + (latestRun+1) );
+
+  } else{
+    incentiveData = JSON.parse(fs.readFileSync("configs/week" + (vaultIncentivesFile) + ".json"))
+    currentCalculation = vaultIncentivesFile;
   }
-  console.log("rewards for week " + (latestRun+1) );
 
   vIncentives = incentiveData;
 
