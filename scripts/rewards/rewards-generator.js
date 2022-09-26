@@ -46,7 +46,7 @@ const args = process.argv.slice(2);
 
 console.log(args)
 
-const vaultIncentivesFile = args[0];
+let vaultIncentivesFile = args[0];
 
 // Arguments
 // collateralDecimals - collateral / debt normalization
