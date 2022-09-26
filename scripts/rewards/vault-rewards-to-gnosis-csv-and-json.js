@@ -196,12 +196,12 @@ async function main() {
   }
   console.log("Rewards: ")
   for(let chain of Object.keys(rewardsPerChainAndToken)){
-    console.log(chain, ": ", rewardsPerChainAndToken[chain].toString())
+    console.log(chain, ": ", ethers.utils.formatUnits(rewardsPerChainAndToken[chain]).toString() )
   }
   console.log("Calculated Rewards: ")
   for(let chain of Object.keys(rewardsPerChainAndTokenCalculated)){
     for(let reward of Object.keys(rewardsPerChainAndTokenCalculated[chain])){
-      console.log(chain, ": ", rewardsPerChainAndTokenCalculated[chain][reward].toString())
+      console.log(chain, ": ", ethers.utils.formatUnits(rewardsPerChainAndTokenCalculated[chain][reward]).toString() )
     }
   }
   console.log("Done:)");
