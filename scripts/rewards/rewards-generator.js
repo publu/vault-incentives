@@ -403,7 +403,7 @@ let vIncentives;
   } else{
 
     let isWeek1 = ((Number(vaultIncentivesFile)) % 2);
-    let vaultIncentivesFile = (isWeek1) ? vaultIncentivesFile : (Number(vaultIncentivesFile) - 1)
+    vaultIncentivesFile = (isWeek1) ? vaultIncentivesFile : (Number(vaultIncentivesFile) - 1)
     incentiveData = JSON.parse(fs.readFileSync("configs/week" + (vaultIncentivesFile) + ".json"))
     currentCalculation = vaultIncentivesFile;
   }
