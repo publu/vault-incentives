@@ -401,6 +401,9 @@ let vIncentives;
     console.log("rewards for week " + (latestRun+1) );
 
   } else{
+
+    let isWeek1 = ((Number(vaultIncentivesFile)) % 2);
+    let vaultIncentivesFile = (isWeek1) ? vaultIncentivesFile : (Number(vaultIncentivesFile) - 1)
     incentiveData = JSON.parse(fs.readFileSync("configs/week" + (vaultIncentivesFile) + ".json"))
     currentCalculation = vaultIncentivesFile;
   }
