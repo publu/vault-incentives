@@ -124,7 +124,7 @@ async function main(
 
   console.log("endBlock: ", endBlock);
   const vaultNameCheck = vaultName.replaceAll(" ","_").replaceAll("/","_");
-  const fileNameToCheck = `week${currentCalculation}/${vaultNameCheck}-QI-rewards-${startBlock}-${endBlock}.json`.replace(" ","_");
+  const fileNameToCheck = `week${currentCalculation}/${vaultNameCheck}-QI-rewards-${startBlock}-${endBlock}.json`;
 
   if (fs.existsSync(fileNameToCheck)) {
     console.log("skipping");
@@ -337,7 +337,6 @@ async function main(
     }
 
     let fileName = `./week${currentCalculation}/${vaultName}-QI-rewards-${startBlock}-${endBlock}.json`;
-    fileName = fileName.replaceAll(" ","_").replaceAll("/","_");
 
     const output = JSON.stringify({
       details: {
