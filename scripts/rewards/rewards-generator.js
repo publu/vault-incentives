@@ -540,10 +540,10 @@ let vIncentives;
         .mul(BigNumber.from(oneWeek))
         .div(BigNumber.from(blocks[chainId][1] - blocks[chainId][0]));
       // reward per week / blocks per week
-
+      const vault_name = incentive.name.replaceAll(" ","_").replaceAll("/","_")
       await main(
         incentive.vaultAddress,
-        incentive.name,
+        vault_name,
         incentive.collateralDecimals,
         incentive.minCdr,
         incentive.maxCdr,
