@@ -1,0 +1,26 @@
+{
+  "10": [
+    {
+      "name": "WETH (Optimism)",
+      "vaultAddress": "0x062016cd29fabb26c52bab646878987fc9b0bc55",
+      "minCdr": 1.55,
+      "maxCdr": 4,
+      "rewardPerSecond": "1000000000000000000000",
+      "collateralDecimals": 18,
+      "startBlock": 18840162,
+      "endBlock": 99999999,
+      "chainId": "10"
+    },
+    {
+      "name": "OP (Optimism)",
+      "vaultAddress": "0xbf1aea8670d2528e08334083616dd9c5f3b087ae",
+      "minCdr": 1.8,
+      "maxCdr": 4.25,
+      "rewardPerSecond": "1000000000000000000000",
+      "collateralDecimals": 18,
+      "startBlock": 18840162,
+      "endBlock": 99999999,
+      "chainId": "10"
+    }
+  ]
+}
