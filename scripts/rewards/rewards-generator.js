@@ -337,7 +337,7 @@ async function main(
     }
 
     let fileName = `./week${currentCalculation}/${vaultName}-QI-rewards-${startBlock}-${endBlock}.json`;
-    fileName = fileName.replace(" ","_");
+    fileName = fileName.replaceAll(" ","_").replaceAll("/","_");
 
     const output = JSON.stringify({
       details: {
