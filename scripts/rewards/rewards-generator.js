@@ -308,7 +308,7 @@ async function main(
       // support multiple extra rewards
       for (let i = 0; i < extraRewards.length; i++) {
         const reward_= extraRewards[i];
-        const fileVaultName = vaultName.replace(" ","_")
+        const fileVaultName = vaultName.replaceAll(" ","_").replaceAll("/","_")
         const weekAmount = BigNumber.from(reward_["rewardPerSecond"]).mul(BigNumber.from(oneWeek));
         const rewardFileName = `./week${currentCalculation}/${vaultName}-${reward_["name"]}-rewards-${startBlock}-${endBlock}.json`;
 
