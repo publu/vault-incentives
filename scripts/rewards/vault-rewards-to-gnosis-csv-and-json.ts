@@ -1,12 +1,48 @@
-// @ts-expect-error TS(2451): Cannot redeclare block-scoped variable 'ethers'.
 const { ethers, BigNumber } = require("ethers");
-// @ts-expect-error TS(2451): Cannot redeclare block-scoped variable 'fs'.
 const fs = require("fs");
 
 async function rewards_to_json_csv() {
   const startBlock_ = process.argv[2];
   const endBlock_ = process.argv[3];
-  const rewardAddress = {
+
+  interface RewardAddresses {
+    [chainId: string]: string;
+  }
+
+  interface BlockInterval {
+    startBlock: string;
+    endBlock: string;
+  }
+
+  interface BlockNumbers {
+    [chainId: string]: BlockInterval;
+  }
+
+  interface OwnerReward {
+    [address: string]: typeof BigNumber;
+  }
+
+  interface RewardAddress {
+    [address: string]: OwnerReward;
+  }
+
+  interface ChainAddress {
+    [address: string]: RewardAddress;
+  }
+
+  interface RewardAddressCalculated {
+    [address: string]: typeof BigNumber;
+  }
+
+  interface ChainAddressCalculated {
+    [address: string]: RewardAddressCalculated;
+  }
+
+  interface IncludedVaults {
+    [vault: string]: ChainAddress;
+  }
+
+  const rewardAddress: RewardAddresses = {
     ["1"]: "0x559b7bfC48a5274754b08819F75C5F27aF53D53b",
     ["10"]: "0x3F56e0c36d275367b8C502090EDF38289b3dEa0d",
     ["56"]: "0xdDC3D26BAA9D2d979F5E2e42515478bf18F354D5",
@@ -19,13 +55,13 @@ async function rewards_to_json_csv() {
   }
   const files = process.argv.slice(4);
 
-  let includedVaults = {};
-  let finalOwnerRewards = {};
+  let includedVaults: IncludedVaults = {};
+  let finalOwnerRewards: OwnerReward = {};
 
-  let chainBlocks = {};
+  let chainBlocks: BlockNumbers = {};
 
-  let rewardsPerChainAndToken = {};
-  let rewardsPerChainAndTokenCalculated = {};
+  let rewardsPerChainAndToken: OwnerReward  = {};
+  let rewardsPerChainAndTokenCalculated: ChainAddressCalculated = {};
 
 
   for (let file of files) {
@@ -41,87 +77,67 @@ async function rewards_to_json_csv() {
         console.log(file, " ", BigNumber.from(total).toString())
       }
 
-      let rewardTokenAddress;
+      let rewardTokenAddress: string;
 
-      // @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
       if(!chainBlocks[chainId]){
-        // @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
-        chainBlocks[chainId] = {};
+        chainBlocks[chainId] = {
+          "startBlock":startBlock,
+          "endBlock":endBlock
+        }
       }
+
       if(!rewardToken){
         // its QI
-        // @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
         rewardTokenAddress = rewardAddress[chainId];
       }else{
         rewardTokenAddress = rewardToken
       }
-      // @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
+
       if (!finalOwnerRewards[chainId]) {
-        // @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
         finalOwnerRewards[chainId] = {};
       }
-      // @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
       if (!includedVaults[chainId]) {
-        // @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
-        includedVaults[chainId] = [];
+        includedVaults[chainId] = {};
       }
 
-      // @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
       if (!finalOwnerRewards[chainId][rewardTokenAddress]) {
-        // @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
         finalOwnerRewards[chainId][rewardTokenAddress] = {};
       }
-      // @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
+
       if (!includedVaults[chainId][rewardTokenAddress]) {
-        // @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
-        includedVaults[chainId][rewardTokenAddress] = [];
+        includedVaults[chainId][rewardTokenAddress] = {};
       }
 
-      // @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
       if(!rewardsPerChainAndTokenCalculated[chainId]) {
-        // @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
         rewardsPerChainAndTokenCalculated[chainId] = {}//BigNumber.from(0)
       }
 
-      // @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
       if(!rewardsPerChainAndTokenCalculated[chainId][rewardTokenAddress]) {
-        // @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
         rewardsPerChainAndTokenCalculated[chainId][rewardTokenAddress] = BigNumber.from(0)
       }
 
-      // @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
       if(!rewardsPerChainAndToken[chainId]){
-        // @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
         rewardsPerChainAndToken[chainId] = BigNumber.from(0)
       }
 
+      
       if(total){
-        // @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
         rewardsPerChainAndToken[chainId] = rewardsPerChainAndToken[chainId].add(BigNumber.from(total));
       }
 
-      // @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
-      chainBlocks[chainId]["startBlock"] = startBlock
-      // @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
-      chainBlocks[chainId]["endBlock"] = endBlock
+      includedVaults[chainId][rewardTokenAddress][vaultAddress] = {};
 
-      // @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
-      includedVaults[chainId].push(vaultAddress);
       const vaultOwners = Object.keys(values);
       for (let i = 0; i < vaultOwners.length; i++) {
         const vaultOwner = vaultOwners[i];
 
-        // @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
         if (finalOwnerRewards[chainId][rewardTokenAddress][vaultOwner] !== undefined) {
-          // @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
           finalOwnerRewards[chainId][rewardTokenAddress][vaultOwner] = finalOwnerRewards[chainId][rewardTokenAddress][vaultOwner].add(
             values[vaultOwner]
           );
         } else {
-          // @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
           console.log("else: ", finalOwnerRewards[chainId][rewardTokenAddress][vaultOwner])
           try{
-            // @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
             finalOwnerRewards[chainId][rewardTokenAddress][vaultOwner] = BigNumber.from(values[vaultOwner]);
           } catch (e) {
             console.log("error? ", e) 
@@ -135,59 +151,43 @@ async function rewards_to_json_csv() {
 //  console.log("chains: ",  chains);
 //  console.log("finalOwnerRewards: ", finalOwnerRewards);
 
-  let total = {};//BigNumber.from(0);
+  let total: OwnerReward = {};//BigNumber.from(0);
 
-  let formattedFinalOwnerRewards = {};
-  let bnFormattedFinalOwnerRewards = {};
+  let formattedFinalOwnerRewards: OwnerReward = {};
+  let bnFormattedFinalOwnerRewards: OwnerReward = {};
 
   for (let chainId of chains) {
     //console.log(chainId)
     
-    // @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
     const rewards = Object.keys(finalOwnerRewards[chainId]);
 
     for(let rewardTokenAddress of rewards) {
 
       //console.log("rewardTokenAddress: ",rewardTokenAddress)
 
-      // @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
       const vaultOwners = Object.keys(finalOwnerRewards[chainId][rewardTokenAddress])
 
       for (let vaultOwner of vaultOwners) {
-        // @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
         if (!formattedFinalOwnerRewards[chainId]) {
-          // @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
           formattedFinalOwnerRewards[chainId] = {}
-          // @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
           bnFormattedFinalOwnerRewards[chainId] = {}
-          // @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
           total[chainId] = {}
         }
 
-        // @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
         if (!formattedFinalOwnerRewards[chainId][rewardTokenAddress]) {
-          // @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
           formattedFinalOwnerRewards[chainId][rewardTokenAddress] = {}
-          // @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
           bnFormattedFinalOwnerRewards[chainId][rewardTokenAddress] = {}
-          // @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
           total[chainId][rewardTokenAddress] = BigNumber.from(0);
         }
 
-        // @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
         total[chainId][rewardTokenAddress] = total[chainId][rewardTokenAddress].add(finalOwnerRewards[chainId][rewardTokenAddress][vaultOwner]);
 
-        // @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
         rewardsPerChainAndTokenCalculated[chainId][rewardTokenAddress] = rewardsPerChainAndTokenCalculated[chainId][rewardTokenAddress].add(finalOwnerRewards[chainId][rewardTokenAddress][vaultOwner])
 
-        // @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
         formattedFinalOwnerRewards[chainId][rewardTokenAddress][vaultOwner.toLowerCase()] = parseFloat(
-          // @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
           ethers.utils.formatUnits(finalOwnerRewards[chainId][rewardTokenAddress][vaultOwner])
         );
-        // @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
         bnFormattedFinalOwnerRewards[chainId][rewardTokenAddress][vaultOwner.toLowerCase()] = 
-          // @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
           ethers.utils.formatUnits(finalOwnerRewards[chainId][rewardTokenAddress][vaultOwner])
         ;
       }
@@ -196,38 +196,30 @@ async function rewards_to_json_csv() {
 
   for (let chainId of Object.keys(formattedFinalOwnerRewards)) {
 
-    // @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
     for (let rewardTokenAddress of Object.keys(formattedFinalOwnerRewards[chainId])) {
 
-      // @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
       let startBlock = chainBlocks[chainId]["startBlock"]
-      // @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
       let endBlock = chainBlocks[chainId]["endBlock"]
       
-      // @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
       const vaultOwners = Object.keys(finalOwnerRewards[chainId][rewardTokenAddress])
       const jsonOutput = JSON.stringify({
     details: {
         chainId,
         rewardAddress: rewardTokenAddress,
-        // @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
         total: parseFloat(ethers.utils.formatUnits(total[chainId][rewardTokenAddress])),
         startBlock,
         endBlock,
         includedVaults,
         nVaultsIncluded: (includedVaults as any).length,
     },
-    // @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
     values: formattedFinalOwnerRewards[chainId][rewardTokenAddress],
 });
 
-      // @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
       let rewardAddressInCSV = (rewardTokenAddress=="0x3F56e0c36d275367b8C502090EDF38289b3dEa0d") ? rewardAddress[chainId] : rewardTokenAddress;
 
       const JsonFileName = `${chainId}-${rewardAddressInCSV}-vault-rewards-${startBlock}-${endBlock}-api.json`;
       const CsvFileName = `${chainId}-${rewardAddressInCSV}-vault-rewards-${startBlock}-${endBlock}-gnosis.csv`;
 
-      // @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
       if(total[chainId][rewardTokenAddress] > 0){
         fs.writeFileSync(JsonFileName, jsonOutput);
 
@@ -236,10 +228,7 @@ async function rewards_to_json_csv() {
         for (let i = 0; i < vaultOwners.length; i++) {
           const vaultOwner = vaultOwners[i];
           gnosisOutputLines.push(
-            `erc20,${rewardAddressInCSV},${vaultOwner},${            
-// @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
-bnFormattedFinalOwnerRewards[chainId][rewardTokenAddress][vaultOwner.toLowerCase()]
-            },`
+            `erc20,${rewardAddressInCSV},${vaultOwner},${bnFormattedFinalOwnerRewards[chainId][rewardTokenAddress][vaultOwner.toLowerCase()]},`
           );
         }
 
@@ -250,14 +239,11 @@ bnFormattedFinalOwnerRewards[chainId][rewardTokenAddress][vaultOwner.toLowerCase
   }
   console.log("Rewards: ")
   for(let chain of Object.keys(rewardsPerChainAndToken)){
-    // @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
     console.log(chain, ": ", ethers.utils.formatUnits(rewardsPerChainAndToken[chain]).toString() )
   }
   console.log("Calculated Rewards: ")
   for(let chain of Object.keys(rewardsPerChainAndTokenCalculated)){
-    // @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
     for(let reward of Object.keys(rewardsPerChainAndTokenCalculated[chain])){
-      // @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
       console.log(chain, ": ", ethers.utils.formatUnits(rewardsPerChainAndTokenCalculated[chain][reward]).toString() )
     }
   }
