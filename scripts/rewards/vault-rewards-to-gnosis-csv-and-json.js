@@ -5,6 +5,7 @@ async function main() {
   const startBlock_ = process.argv[2];
   const endBlock_ = process.argv[3];
   const rewardAddress = {
+    ["1"]: "0x559b7bfC48a5274754b08819F75C5F27aF53D53b",
     ["10"]: "0x3F56e0c36d275367b8C502090EDF38289b3dEa0d",
     ["56"]: "0xdDC3D26BAA9D2d979F5E2e42515478bf18F354D5",
     ["100"]: "0xdFA46478F9e5EA86d57387849598dbFB2e964b02",
