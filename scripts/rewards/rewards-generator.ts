@@ -4,7 +4,7 @@ const { ethers, BigNumber } = require("ethers");
 const { Contract, Provider } = require("ethcall");
 const fs = require("fs");
 const axios = require('axios');
-let currentCalculation;
+let currentCalculation: any;
 
 const {
   sleep,
@@ -19,6 +19,14 @@ const { formatDistanceToNowStrict, isBefore } = require("date-fns");
 const { formatInTimeZone } = require("date-fns-tz");
 const { getUnixTime } = require("date-fns/fp");
 const oneWeek = 604800;
+
+interface OwnerDebt {
+  [address: string]: typeof BigNumber;
+}
+
+interface OwnerReward {
+  [address: string]: typeof BigNumber;
+}
 
 // Every X blocks, check qualifying vaults.
 // Price - getEthPriceSource()
@@ -39,8 +47,8 @@ const onlyChain = undefined;
 const onlyVaultType = undefined; 
 
 // filters if runForVaults.length > 0
-const runForVaults = [];
-const excludeVaults = [];
+const runForVaults: any = [];
+const excludeVaults: any = [];
 
 const args = process.argv.slice(2);
 
@@ -62,10 +70,10 @@ let vaultIncentivesFile = args[0];
 // blockInterval - N blocks per run (100. e.g. snapshots every 100 blocks between startBlock and endBlock and interpolates rewards)
 
 async function tryGetMulticallResults(
-  multicall,
-  calls,
-  repeatOnFail,
-  block,
+  multicall: any,
+  calls: any,
+  repeatOnFail: any,
+  block: any,
   repeatDelayMs = 10000
 ) {
   while (true) {
@@ -86,17 +94,17 @@ async function tryGetMulticallResults(
 }
 
 async function main(
-  vaultAddress,
-  vaultName,
-  collateralDecimals,
-  minCdr,
-  maxCdr,
-  startBlock,
-  endBlock,
-  blockInterval,
-  rewardPerBlock,
-  provider,
-  extraRewards
+  vaultAddress: any,
+  vaultName: any,
+  collateralDecimals: any,
+  minCdr: any,
+  maxCdr: any,
+  startBlock: any,
+  endBlock: any,
+  blockInterval: any,
+  rewardPerBlock: any,
+  provider: any,
+  extraRewards: any
 ) {
   const isMaticVault =
     vaultAddress.toLowerCase() == "0xa3fa99a148fa48d14ed51d610c367c61876997f1";
@@ -113,7 +121,8 @@ async function main(
   );
 
   let totalReward = BigNumber.from(0);
-  const ownerReward = {};
+
+  const ownerReward: OwnerReward = {};
 
   let finalized = false;
   let skip = false;
@@ -132,8 +141,8 @@ async function main(
     skip = true;
   }
 
-  let ownerDebtGlobal;
-  let totalDebtGlobal;
+  let ownerDebtGlobal: OwnerDebt = {};
+  let totalDebtGlobal: typeof BigNumber;
 
   while (!finalized) {
     const [price] = await tryGetMulticallResults(
@@ -223,7 +232,8 @@ async function main(
     );
 
     let totalDebt = BigNumber.from(0);
-    let ownerDebt = {};
+    
+    let ownerDebt: OwnerDebt = {};
 
     for (let i = 0; i < vaultResultsChunked.length; i++) {
       const [owner, collateral, debt, cdr_big] = vaultResultsChunked[i];
@@ -314,7 +324,7 @@ async function main(
 
         const ownerRewarders = Object.keys(ownerDebtGlobal);
         
-        let extraRewarders = {};
+        let extraRewarders: OwnerReward = {};
 
         for(let o=0; o < ownerRewarders.length; o++){
           const fraction = ownerDebtGlobal[ownerRewarders[o]];
@@ -361,10 +371,10 @@ let vIncentives;
   let calculated;
   if(!vaultIncentivesFile){
     calculated = fs.readdirSync("./")
-                  .filter(calculated => String(calculated).startsWith('week'))
-                  .map(item => item.replace("week", ""))
-                  .filter(item => Number(item))
-                  .map(item => Number(item))
+                  .filter((calculated: any) => String(calculated).startsWith('week'))
+                  .map((item: any) => item.replace("week", ""))
+                  .filter((item: any) => Number(item))
+                  .map((item: any) => Number(item))
 
 
     let latestRun = Math.max(...calculated);
@@ -381,13 +391,13 @@ let vIncentives;
       // we create a new config from the api
       await axios
         .get('https://api.mai.finance/v2/vaultIncentives')
-        .then(res => {
-          fs.writeFileSync("configs/week" + (latestRun+1) + ".json", JSON.stringify(res.data), function (err) {
+        .then((res: any) => {
+          fs.writeFileSync("configs/week" + (latestRun+1) + ".json", JSON.stringify(res.data), function (err: any) {
             if (err) return console.log(err);
           });
           incentiveData = JSON.parse(fs.readFileSync("configs/week" + (latestRun+1) + ".json"))
         })
-        .catch(error => {
+        .catch((error: any) => {
           console.error(error);
         });
     }
@@ -402,7 +412,7 @@ let vIncentives;
   } else{
 
     let isWeek1 = ((Number(vaultIncentivesFile)) % 2);
-    vaultIncentivesFile2 = (!isWeek1) ? vaultIncentivesFile : (Number(vaultIncentivesFile) - 1)
+    let vaultIncentivesFile2 = (!isWeek1) ? vaultIncentivesFile : (Number(vaultIncentivesFile) - 1)
     incentiveData = JSON.parse(fs.readFileSync("configs/week" + (vaultIncentivesFile2) + ".json"))
     currentCalculation = vaultIncentivesFile;
   }
@@ -468,8 +478,12 @@ let vIncentives;
   console.log("startBlocks ", startBlocks);
   console.log("endBlocks ", endBlocks);
 
-  var blocks = {};
-  var blockIntervals = {};
+  interface BlockNumbers {
+    [chainId: string]: number[];
+  }
+
+  var blocks: BlockNumbers  = {};
+  var blockIntervals: typeof BigNumber = {};
 
   for (const x of startBlocks) {
     blocks[x.network] = [];
@@ -508,7 +522,7 @@ let vIncentives;
   };
   */
 
-  for (chainId of Object.keys(vIncentives)) {
+  for (let chainId of Object.keys(vIncentives)) {
     if (onlyChain && chainId !== onlyChain) continue
 
     const incentives = vIncentives[chainId];
@@ -518,7 +532,7 @@ let vIncentives;
       parseInt(chainId)
     );
 
-    const validIncentives = incentives.filter((incentive) => {
+    const validIncentives = incentives.filter((incentive: any) => {
       if (runForVaults.length > 0) {
         return runForVaults.includes(incentive.name);
       }
@@ -533,7 +547,7 @@ let vIncentives;
       if (onlyVaultType && incentive.name !== onlyVaultType) continue
 
       console.log(`Starting vault incentive script for ${incentive.name}`);
-      const before = new Date();
+      const before: any = new Date();
 
       const rewardPerBlock = BigNumber.from(incentive.rewardPerSecond)
         .mul(BigNumber.from(oneWeek))
@@ -554,7 +568,7 @@ let vIncentives;
         incentive.extraRewards
       );
 
-      const after = new Date();
+      const after: any = new Date();
 
       console.log(
         `Finished ${incentive.name} vault reward script in ${(

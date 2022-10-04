@@ -1,8 +1,11 @@
 const expect = require("chai").expect;
 
+// @ts-expect-error TS(2451): Cannot redeclare block-scoped variable 'previousSu... Remove this comment to see the full error message
 const { previousSunday } = require("date-fns/fp");
 const {
+  // @ts-expect-error TS(2451): Cannot redeclare block-scoped variable 'generateSt... Remove this comment to see the full error message
   generateStartTime,
+  // @ts-expect-error TS(2451): Cannot redeclare block-scoped variable 'setTo5PMUT... Remove this comment to see the full error message
   setTo5PMUTC,
 } = require("../../scripts/rewards/utils");
 

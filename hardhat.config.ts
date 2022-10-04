@@ -212,34 +212,55 @@ const config: HardhatUserConfig = {
     // Your API key for Etherscan
     // Obtain one at https://etherscan.io/
     apiKey: {
+      // @ts-expect-error TS(2322): Type 'string | undefined' is not assignable to typ... Remove this comment to see the full error message
       mainnet: process.env.ETHERSCAN_KEY,
+      // @ts-expect-error TS(2322): Type 'string | undefined' is not assignable to typ... Remove this comment to see the full error message
       ropsten: process.env.ETHERSCAN_KEY,
+      // @ts-expect-error TS(2322): Type 'string | undefined' is not assignable to typ... Remove this comment to see the full error message
       rinkeby: process.env.ETHERSCAN_KEY,
+      // @ts-expect-error TS(2322): Type 'string | undefined' is not assignable to typ... Remove this comment to see the full error message
       goerli: process.env.ETHERSCAN_KEY,
+      // @ts-expect-error TS(2322): Type 'string | undefined' is not assignable to typ... Remove this comment to see the full error message
       kovan: process.env.ETHERSCAN_KEY,
       // binance smart chain
+      // @ts-expect-error TS(2322): Type 'string | undefined' is not assignable to typ... Remove this comment to see the full error message
       bsc: process.env.BSCSCAN_KEY,
+      // @ts-expect-error TS(2322): Type 'string | undefined' is not assignable to typ... Remove this comment to see the full error message
       bscTestnet: process.env.BSCSCAN_KEY,
       // huobi eco chain
+      // @ts-expect-error TS(2322): Type 'string | undefined' is not assignable to typ... Remove this comment to see the full error message
       heco: process.env.HECOINFO_KEY,
+      // @ts-expect-error TS(2322): Type 'string | undefined' is not assignable to typ... Remove this comment to see the full error message
       hecoTestnet: process.env.HECOINFO_KEY,
       // fantom mainnet
+      // @ts-expect-error TS(2322): Type 'string | undefined' is not assignable to typ... Remove this comment to see the full error message
       opera: process.env.FTMSCAN_KEY,
+      // @ts-expect-error TS(2322): Type 'string | undefined' is not assignable to typ... Remove this comment to see the full error message
       ftmTestnet: process.env.FTMSCAN_KEY,
       // optimism
+      // @ts-expect-error TS(2322): Type 'string | undefined' is not assignable to typ... Remove this comment to see the full error message
       optimisticEthereum: process.env.OPTIMISTIC_ETHERSCAN_KEY,
+      // @ts-expect-error TS(2322): Type 'string | undefined' is not assignable to typ... Remove this comment to see the full error message
       optimisticKovan: process.env.OPTIMISTIC_ETHERSCAN_KEY,
       // polygon
+      // @ts-expect-error TS(2322): Type 'string | undefined' is not assignable to typ... Remove this comment to see the full error message
       polygon: process.env.POLYGONSCAN_KEY,
+      // @ts-expect-error TS(2322): Type 'string | undefined' is not assignable to typ... Remove this comment to see the full error message
       polygonMumbai: process.env.POLYGONSCAN_KEY,
       // arbitrum
+      // @ts-expect-error TS(2322): Type 'string | undefined' is not assignable to typ... Remove this comment to see the full error message
       arbitrumOne: process.env.ARBISCAN_KEY,
+      // @ts-expect-error TS(2322): Type 'string | undefined' is not assignable to typ... Remove this comment to see the full error message
       arbitrumTestnet: process.env.ARBISCAN_KEY,
       // avalanche
+      // @ts-expect-error TS(2322): Type 'string | undefined' is not assignable to typ... Remove this comment to see the full error message
       avalanche: process.env.SNOWTRACE_KEY,
+      // @ts-expect-error TS(2322): Type 'string | undefined' is not assignable to typ... Remove this comment to see the full error message
       avalancheFujiTestnet: process.env.SNOWTRACE_KEY,
       // moonriver
+      // @ts-expect-error TS(2322): Type 'string | undefined' is not assignable to typ... Remove this comment to see the full error message
       moonriver: process.env.MOONRIVER_MOONSCAN_KEY,
+      // @ts-expect-error TS(2322): Type 'string | undefined' is not assignable to typ... Remove this comment to see the full error message
       moonbaseAlpha: process.env.MOONRIVER_MOONSCAN_KEY,
       // xdai and sokol don't need an API key, but you still need
       // to specify one; any string placeholder will work
