@@ -144,6 +144,9 @@ async function main(
   let ownerDebtGlobal: OwnerDebt = {};
   let totalDebtGlobal: typeof BigNumber;
 
+  let totalDebt = BigNumber.from(0);    
+  let ownerDebt: OwnerDebt = {};
+
   while (!finalized) {
     const [price] = await tryGetMulticallResults(
       multicall,
@@ -231,17 +234,8 @@ async function main(
       existingVaults.length
     );
 
-    let totalDebt = BigNumber.from(0);
-    
-    let ownerDebt: OwnerDebt = {};
-
     for (let i = 0; i < vaultResultsChunked.length; i++) {
       const [owner, collateral, debt, cdr_big] = vaultResultsChunked[i];
-      const cdr_ =
-        parseInt(collateral.mul(price).div("100000000")) /
-        parseInt(
-          debt.div(BigNumber.from(10).pow(18 - collateralDecimals)).toString()
-        );
 
       let cdr;
       try {
@@ -250,7 +244,7 @@ async function main(
         cdr = 0; // if cdr is too high it won't count either way. must be under 400 which is a number.
       }
 
-      console.log("cdr: ", cdr);
+      //console.log("cdr: ", cdr);
 
       if (cdr >= minCdr && cdr <= maxCdr) {
         totalDebt = totalDebt.add(debt);
@@ -277,9 +271,12 @@ async function main(
         .div(totalDebt);
       if (ownerReward[owner]) {
         ownerReward[owner] = ownerReward[owner].add(reward);
+        ownerDebtGlobal[owner] = ownerDebtGlobal[owner].add(debt);
       } else {
         ownerReward[owner] = reward;
+        ownerDebtGlobal[owner] = debt;
       }
+
       totalReward = totalReward.add(reward);
     }
 
@@ -297,10 +294,12 @@ async function main(
         blockNumber += blockInterval;
       }
     } else {
-      ownerDebtGlobal = ownerDebt;
-      totalDebtGlobal = totalDebt;
       finalized = true;
     }
+    if(!totalDebtGlobal)
+      totalDebtGlobal = totalDebt
+    else
+      totalDebtGlobal.add(totalDebt);
   }
 
   if (!skip) {
@@ -324,6 +323,8 @@ async function main(
 
         const ownerRewarders = Object.keys(ownerDebtGlobal);
         
+        //console.log("ownerRewarders: ", ownerRewarders)
+
         let extraRewarders: OwnerReward = {};
 
         for(let o=0; o < ownerRewarders.length; o++){
