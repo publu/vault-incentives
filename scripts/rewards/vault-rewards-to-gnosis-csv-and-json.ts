@@ -203,17 +203,17 @@ async function rewards_to_json_csv() {
       
       const vaultOwners = Object.keys(finalOwnerRewards[chainId][rewardTokenAddress])
       const jsonOutput = JSON.stringify({
-    details: {
-        chainId,
-        rewardAddress: rewardTokenAddress,
-        total: parseFloat(ethers.utils.formatUnits(total[chainId][rewardTokenAddress])),
-        startBlock,
-        endBlock,
-        includedVaults,
-        nVaultsIncluded: (includedVaults as any).length,
-    },
-    values: formattedFinalOwnerRewards[chainId][rewardTokenAddress],
-});
+          details: {
+              chainId,
+              rewardAddress: rewardTokenAddress,
+              total: parseFloat(ethers.utils.formatUnits(total[chainId][rewardTokenAddress])),
+              startBlock,
+              endBlock,
+              includedVaults,
+              nVaultsIncluded: (includedVaults as any).length,
+          },
+          values: formattedFinalOwnerRewards[chainId][rewardTokenAddress],
+      });
 
       let rewardAddressInCSV = (rewardTokenAddress=="0x3F56e0c36d275367b8C502090EDF38289b3dEa0d") ? rewardAddress[chainId] : rewardTokenAddress;
 

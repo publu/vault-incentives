@@ -142,7 +142,6 @@ async function main(
   }
 
   let ownerDebtGlobal: OwnerDebt = {};
-  let totalDebtGlobal: typeof BigNumber;
 
   let totalDebt = BigNumber.from(0);    
   let ownerDebt: OwnerDebt = {};
@@ -265,16 +264,23 @@ async function main(
     for (let i = 0; i < owners.length; i++) {
       const owner = owners[i];
       const debt = ownerDebt[owner];
-      const reward = BigNumber.from(rewardPerBlock)
+      
+      let rewardCalculator: any;
+
+      if(rewardPerBlock == 0){
+        rewardCalculator = BigNumber.from("1000000000000000000")
+      }else{
+        rewardCalculator=rewardPerBlock
+      }
+
+      const reward = BigNumber.from(rewardCalculator)
         .mul(countedBlocks)
         .mul(debt)
         .div(totalDebt);
       if (ownerReward[owner]) {
         ownerReward[owner] = ownerReward[owner].add(reward);
-        ownerDebtGlobal[owner] = ownerDebtGlobal[owner].add(debt);
       } else {
         ownerReward[owner] = reward;
-        ownerDebtGlobal[owner] = debt;
       }
 
       totalReward = totalReward.add(reward);
@@ -296,15 +302,12 @@ async function main(
     } else {
       finalized = true;
     }
-    if(!totalDebtGlobal)
-      totalDebtGlobal = totalDebt
-    else
-      totalDebtGlobal.add(totalDebt);
   }
 
   if (!skip) {
     let total = BigNumber.from(0);
     const owners = Object.keys(ownerReward);
+
     for (let i = 0; i < owners.length; i++) {
       const owner = owners[i];
       total = total.add(ownerReward[owner]);
@@ -320,16 +323,22 @@ async function main(
         const fileVaultName = vaultName.replaceAll(" ","_").replaceAll("/","_")
         const weekAmount = BigNumber.from(reward_["rewardPerSecond"]).mul(BigNumber.from(oneWeek));
         const rewardFileName = `./week${currentCalculation}/${vaultName}-${reward_["name"]}-rewards-${startBlock}-${endBlock}.json`;
+        
+        console.log("weekAmount: ", weekAmount)
 
-        const ownerRewarders = Object.keys(ownerDebtGlobal);
+        const ownerRewarders = Object.keys(ownerReward);
         
         //console.log("ownerRewarders: ", ownerRewarders)
 
         let extraRewarders: OwnerReward = {};
 
+        console.log("ownerRewarders: ", ownerRewarders)
+
         for(let o=0; o < ownerRewarders.length; o++){
-          const fraction = ownerDebtGlobal[ownerRewarders[o]];
-          extraRewarders[ownerRewarders[o]] = BigNumber.from(fraction).mul(weekAmount).div(totalDebtGlobal);
+          const fraction = ownerReward[ownerRewarders[o]];
+          console.log("fraction: ", fraction.toString())
+          console.log("total: ", total.toString())
+          extraRewarders[ownerRewarders[o]] = BigNumber.from(fraction).mul(weekAmount).div(total);
         }
         const extraReward = JSON.stringify({
           details: {
@@ -347,19 +356,21 @@ async function main(
       }
     }
 
-    let fileName = `./week${currentCalculation}/${vaultName}-QI-rewards-${startBlock}-${endBlock}.json`;
+    if(rewardPerBlock.gt(0)){
+      let fileName = `./week${currentCalculation}/${vaultName}-QI-rewards-${startBlock}-${endBlock}.json`;
 
-    const output = JSON.stringify({
-      details: {
-        chainId: provider._network.chainId,
-        vaultAddress,
-        startBlock,
-        endBlock,
-        total,
-      },
-      values: ownerReward,
-    });
-    fs.writeFileSync(fileName, output);
+      const output = JSON.stringify({
+        details: {
+          chainId: provider._network.chainId,
+          vaultAddress,
+          startBlock,
+          endBlock,
+          total,
+        },
+        values: ownerReward,
+      });
+      fs.writeFileSync(fileName, output);
+    }
   }
 }
 
