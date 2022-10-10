@@ -1,13 +1,14 @@
 const { previousSunday } = require("date-fns/fp");
 
-// @ts-expect-error TS(2451): Cannot redeclare block-scoped variable 'sleep'.
+import fs from 'fs'
+import path from 'path'
+
 function sleep(ms: any) {
   return new Promise((resolve) => {
     setTimeout(resolve, ms);
   });
 }
 
-// @ts-expect-error TS(2451): Cannot redeclare block-scoped variable 'splitToChu... Remove this comment to see the full error message
 const splitToChunks = (array: any, parts: any) => {
   let result = [];
   for (let i = parts; i > 0; i--) {
@@ -16,7 +17,6 @@ const splitToChunks = (array: any, parts: any) => {
   return result;
 };
 
-// @ts-expect-error TS(2451): Cannot redeclare block-scoped variable 'chunkArray... Remove this comment to see the full error message
 const chunkArray = (array: any, itemsPerChunk: any) => {
   let chunked = [];
   for (let i = 0; i < array.length; i += itemsPerChunk) {
@@ -31,7 +31,6 @@ function setTo5PMUTC(date: any) {
   );
 }
 
-// @ts-expect-error TS(2451): Cannot redeclare block-scoped variable 'generateSt... Remove this comment to see the full error message
 function generateStartTime(date: any) {
   // const todayAsStartOfPeriod = setTo5PMUTC(date);
 
@@ -47,10 +46,39 @@ function generateStartTime(date: any) {
   // }
 }
 
-module.exports = {
+
+function getConfigFile(weekNumber: number) {
+  return  JSON.parse(fs.readFileSync(getConfigFilePath(weekNumber)).toString());
+}
+
+function getConfigFilePath(weekNumber: number) {
+  return path.join(__dirname ,"../output/configs/week"+weekNumber.toString()+".json")
+}
+
+function getOuputDirPath(weekNumber: number) {
+  return path.join(__dirname ,"../output/week"+weekNumber.toString())
+
+}
+
+function getLatestRun() {
+  let calculated = fs.readdirSync("../output/")
+  .filter((calculated: any) => String(calculated).startsWith('week'))
+  .map((item: any) => item.replace("week", ""))
+  .filter((item: any) => Number(item))
+  .map((item: any) => Number(item))
+
+  let latestRun = Math.max(...calculated);
+  return latestRun;
+}
+
+module.exports =  {
   sleep,
   splitToChunks,
   chunkArray,
   setTo5PMUTC,
   generateStartTime,
+  getConfigFile,
+  getConfigFilePath,
+  getOuputDirPath,
+  getLatestRun
 };
