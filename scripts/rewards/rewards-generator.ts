@@ -429,7 +429,7 @@ let vIncentives;
     currentCalculation = vaultIncentivesFile;
   }
 
-  vIncentives = incentiveData;
+  vIncentives = incentiveData.incentives;
 
   const curDate = new Date();
   const purposedStartDate = generateStartTime(curDate); // Override TS HERE
