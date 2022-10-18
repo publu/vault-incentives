@@ -61,7 +61,7 @@ function getOuputDirPath(weekNumber: number) {
 }
 
 function getLatestRun() {
-  let calculated = fs.readdirSync("../output/")
+  let calculated = fs.readdirSync(path.join(__dirname,"../output/"))
   .filter((calculated: any) => String(calculated).startsWith('week'))
   .map((item: any) => item.replace("week", ""))
   .filter((item: any) => Number(item))
