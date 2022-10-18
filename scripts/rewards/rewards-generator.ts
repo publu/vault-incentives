@@ -538,7 +538,7 @@ let vIncentives;
     if (onlyChain && chainId !== onlyChain) continue
 
     const incentives = vIncentives[chainId];
-    console.log("Using: ", RPC[chainId]);
+    console.log("Using: ", chainId, RPC[chainId]);
     const provider = new ethers.providers.JsonRpcProvider(
       RPC[chainId],
       parseInt(chainId)
