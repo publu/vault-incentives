@@ -310,7 +310,7 @@ let vIncentives;
     currentCalculation = vaultIncentivesFile;
   }
 
-  vIncentives = incentiveData;
+  vIncentives = incentiveData.incentives;
 
   const curDate = new Date();
   const purposedStartDate = generateStartTime(curDate); // Override TS HERE
@@ -363,9 +363,7 @@ let vIncentives;
   for (let chainId of Object.keys(vIncentives)) {
     if (onlyChain && chainId !== onlyChain) continue
     const incentives = vIncentives[chainId];
-
-    console.log("Using: ", RPC[chainId]);
-
+    console.log("Using: ", chainId, RPC[chainId]);
     const provider = new ethers.providers.JsonRpcProvider(
       RPC[chainId],
       parseInt(chainId)
