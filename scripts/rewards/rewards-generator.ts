@@ -69,6 +69,7 @@ const excludeVaults: any = [];
 
 const args = process.argv.slice(2);
 let vaultIncentivesFile = args[0];
+const shouldPromptContinue = args[1] === 'y';
 
 // Arguments
 // collateralDecimals - collateral / debt normalization
@@ -315,20 +316,22 @@ let vIncentives;
   const curDate = new Date();
   const purposedStartDate = generateStartTime(curDate); // Override TS HERE
 
-  const promptString = `This reward period will start from [${formatInTimeZone(
-    purposedStartDate,
-    "UTC",
-    "P KK:mma O"
-  )}](Unix TS:${getUnixTime(
-    purposedStartDate
-  )}) making the start date ${formatDistanceToNowStrict(purposedStartDate)} ${isBefore(purposedStartDate, curDate) ? "before" : "after"
-    } today, is that correct?`;
-
-  const prompt = await new Confirm(promptString).run();
-
-  if (!prompt) {
-    console.log("Exiting...");
-    return -1;
+  if(!shouldPromptContinue) {
+    const promptString = `This reward period will start from [${formatInTimeZone(
+      purposedStartDate,
+      "UTC",
+      "P KK:mma O"
+    )}](Unix TS:${getUnixTime(
+      purposedStartDate
+    )}) making the start date ${formatDistanceToNowStrict(purposedStartDate)} ${isBefore(purposedStartDate, curDate) ? "before" : "after"
+      } today, is that correct?`;
+  
+    const prompt = await new Confirm(promptString).run();
+  
+    if (!prompt) {
+      console.log("Exiting...");
+      return -1;
+    }
   }
 
   const startDate = getUnixTime(purposedStartDate);
