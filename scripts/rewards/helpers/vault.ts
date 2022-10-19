@@ -1,4 +1,4 @@
-import { BigNumberish } from "ethers";
+import { BigNumberish, BigNumber } from "ethers";
 
 const { sleep, chunkArray, splitToChunks } = require('./utils');
 
@@ -6,6 +6,8 @@ const Erc20Stablecoin = require("../../../abis/erc20Stablecoin.json");
 const QiStablecoin = require("../../../abis/QiStablecoin.json");
 const { Contract } = require("ethcall");
 
+
+const MAI_100 = BigNumber.from(10).pow(18).mul(100);
 
 async function tryGetMulticallResults(
     multicall: any,
@@ -125,6 +127,7 @@ async function getVaultResults(multicall: any, vaultAddress: string, blockNumber
                     blockNumber
                 );
                 vaultResults.push(...results);
+                console.log(results);
                 done = true;
             } catch (e) {
                 console.log("Error", e);
@@ -134,10 +137,23 @@ async function getVaultResults(multicall: any, vaultAddress: string, blockNumber
             }
         }
     }
-    return splitToChunks(
+    const resultsChunked =  splitToChunks(
         vaultResults,
         existingVaults.length
       );
+    
+    const finalResults = [];
+    for (let i = 0; i < resultsChunked.length; i++) {
+        const [owner, collateral, debt, cdr_big] = resultsChunked[i];
+        
+        if(debt.gte(MAI_100)) {
+            finalResults.push(resultsChunked[i]);
+        } else {
+            console.log("ignored: ", owner, debt.toString(), MAI_100);
+        }
+  
+    }
+    return finalResults;
 }
 
 module.exports = {
