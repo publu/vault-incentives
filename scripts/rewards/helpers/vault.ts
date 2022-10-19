@@ -127,7 +127,6 @@ async function getVaultResults(multicall: any, vaultAddress: string, blockNumber
                     blockNumber
                 );
                 vaultResults.push(...results);
-                console.log(results);
                 done = true;
             } catch (e) {
                 console.log("Error", e);
@@ -149,7 +148,7 @@ async function getVaultResults(multicall: any, vaultAddress: string, blockNumber
         if(debt.gte(MAI_100)) {
             finalResults.push(resultsChunked[i]);
         } else {
-            console.log("ignored: ", owner, debt.toString(), MAI_100);
+//            console.log("ignored: ", owner, debt.toString(), MAI_100);
         }
   
     }
