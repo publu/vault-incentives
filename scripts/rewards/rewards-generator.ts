@@ -245,7 +245,7 @@ async function main(
 
       //console.log("cdr: ", cdr);
 
-      if (cdr >= minCdr && cdr <= maxCdr) {
+      if (debt.gte(BigNumber.from("100000000000000000000"))cdr >= minCdr && cdr <= maxCdr) {
         totalDebt = totalDebt.add(debt);
         if (ownerDebt[owner]) {
           ownerDebt[owner] = ownerDebt[owner].add(debt);
