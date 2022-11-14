@@ -462,7 +462,7 @@ let vIncentives;
   {
     blocks (where: { ts: ` +
     startDate +
-    `, network_in: ["1", "100", "10", "56", "137", "250", "1088", "42161", "43114"] }) {
+    `, network_in: ["1", "10", "56", "137", "250", "1088", "42161", "43114"] }) {
       network
       number
     }
@@ -477,7 +477,7 @@ let vIncentives;
   {
     blocks (where: { ts: ` +
     endDate +
-    `, network_in: ["1", "100", "10", "56", "100", "137", "250", "1088", "42161", "43114"] }) {
+    `, network_in: ["1", "10", "56", "137", "250", "1088", "42161", "43114"] }) {
       network
       number
     }
