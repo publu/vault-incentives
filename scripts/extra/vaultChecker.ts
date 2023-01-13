@@ -166,15 +166,6 @@ async function main() {
     }
     fs.writeFileSync("./output.json", JSON.stringify(Array.from(qualifiedAddresses), null, 4))
     console.log(qualifiedAddresses);
-    
-  
-   
-
-    
-
-
-
-
 }
 
 (async () => {
