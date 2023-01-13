@@ -2,13 +2,12 @@ require("dotenv").config();
 
 import { HardhatUserConfig } from "hardhat/types";
 import "@nomiclabs/hardhat-waffle";
-import "hardhat-typechain";
 import "tsconfig-paths/register";
 import "@nomiclabs/hardhat-web3";
 
 import "@nomiclabs/hardhat-etherscan";
 
-import "./scripts/generate-eqi-disperse";
+//import "./scripts/generate-eqi-disperse";
 
 const config: HardhatUserConfig = {
   defaultNetwork: "mainnet",

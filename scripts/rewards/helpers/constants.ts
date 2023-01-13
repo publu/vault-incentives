@@ -1,8 +1,7 @@
 require("dotenv").config({ path: require('find-config')('.env') });
 
 const { ChainId } = require("@qidao/sdk");
-
-// @ts-expect-error TS(2451): Cannot redeclare block-scoped variable 'RPC'.
+console.log(ChainId.MAINNET);
 const RPC = {
   [ChainId.ARBITRUM]: process.env.ARBITRUM_RPC_URL,
   [ChainId.MAINNET]: process.env.MAINNET_RPC_URL,
